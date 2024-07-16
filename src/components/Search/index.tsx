@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button, TextField, Paper } from "@mui/material";
 
 const SearchForm = ({
@@ -8,18 +8,23 @@ const SearchForm = ({
 }) => {
   const [textValue, setTextValue] = useState<string>("");
 
-  const onTextChange = (e: any) => setTextValue(e.target.value);
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTextValue(e.target.value);
+  };
   const onSubmit = () => handleSearch(textValue);
 
   return (
     <Paper
       component="form"
-      sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 400 }}
+      sx={{
+        display: "flex",
+        boxShadow: 0,
+      }}
     >
       <TextField
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ mr: 1, flex: 1 }}
         placeholder="Search"
-        onChange={onTextChange}
+        onChange={onChange}
         value={textValue}
         onKeyDown={(ev) => {
           if (ev.key === "Enter") {
@@ -30,7 +35,7 @@ const SearchForm = ({
       />
       <Button
         variant="contained"
-        sx={{ p: "10px", fontSize: 14 }}
+        sx={{ fontSize: 14 }}
         aria-label="search"
         onClick={onSubmit}
       >

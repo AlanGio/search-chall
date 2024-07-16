@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SearchForm from "./components/Search";
 import axios from "axios";
 import { Box, CircularProgress } from "@mui/material";
@@ -55,6 +55,7 @@ function App() {
                   url={item.url}
                   description={item.description}
                   id={item.id}
+                  key={item.id}
                 />
               ))
             : "There are no results matching your query.")}

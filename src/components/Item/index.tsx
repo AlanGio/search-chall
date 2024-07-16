@@ -1,4 +1,4 @@
-import { Chip, Paper } from "@mui/material";
+import { Chip, Link, Paper, Typography } from "@mui/material";
 import { SearchResult } from "../../App";
 
 const categories = {
@@ -7,16 +7,24 @@ const categories = {
   BLOG_POSTS: "Blog Post",
 };
 
-const Item = ({ id, category, url, title, description }: SearchResult) => (
-  <Paper sx={{ my: 2, p: 2, border: "1px solid black" }} key={id}>
+const Item = ({ category, url, title, description }: SearchResult) => (
+  <Paper
+    sx={{
+      mb: 2,
+      p: 2,
+      border: "1px solid black",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      gap: 1,
+    }}
+  >
     <Chip label={categories[category]} />
 
-    <h2>
-      <a href={url} target="_blank" rel="noreferrer">
-        {title}
-      </a>
-    </h2>
-    <h3>{description}</h3>
+    <Link href={url} target="_blank" variant="h5" rel="noreferrer">
+      {title}
+    </Link>
+    <Typography variant="subtitle1">{description}</Typography>
   </Paper>
 );
 
