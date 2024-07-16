@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Button, InputBase, Paper } from "@mui/material";
+import { Button, TextField, Paper } from "@mui/material";
 
-export default function SearchForm({
+const SearchForm = ({
   handleSearch,
 }: {
   handleSearch: (value: string) => void;
-}) {
+}) => {
   const [textValue, setTextValue] = useState<string>("");
 
   const onTextChange = (e: any) => setTextValue(e.target.value);
@@ -16,12 +16,11 @@ export default function SearchForm({
       component="form"
       sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: 400 }}
     >
-      <InputBase
+      <TextField
         sx={{ ml: 1, flex: 1 }}
         placeholder="Search"
         onChange={onTextChange}
         value={textValue}
-        inputProps={{ "aria-label": "search" }}
         onKeyDown={(ev) => {
           if (ev.key === "Enter") {
             ev.preventDefault();
@@ -39,4 +38,6 @@ export default function SearchForm({
       </Button>
     </Paper>
   );
-}
+};
+
+export default SearchForm;
