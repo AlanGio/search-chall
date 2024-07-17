@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchForm from "./components/Search";
-import axios from "axios";
 import { Box, CircularProgress } from "@mui/material";
 import Item from "./components/Item";
+import { useSearchQuery } from "./redux/slices/search";
 
 export type SearchResult = {
   id: string;
@@ -12,43 +12,27 @@ export type SearchResult = {
   category: "VIDEOS" | "PLAYLISTS" | "BLOG_POSTS";
 };
 
-const baseURL = "/api/data?search=";
-
 function App() {
-  const [error, setError] = useState<Error | null>(null);
-  const [searchValue, setSearchValue] = useState<string | null>(null);
-  const [resultValue, setResultValue] = useState<SearchResult[] | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (searchValue) {
-      setIsLoading(true);
-      setResultValue(null);
-      axios
-        .get(`${baseURL}${searchValue}`)
-        .then((response) => {
-          setResultValue(response.data);
-        })
-        .catch((error) => {
-          setError(error);
-        })
-        .finally(() => setIsLoading(false));
-    }
-  }, [searchValue]);
+  const [value, setValue] = useState<string | null>(null);
+  const { data, error, isLoading } = useSearchQuery(value, {
+    skip: value === null,
+  });
 
   return !error ? (
     <div className="App">
       <header className="App-header">
         <h1>Search UI Challenge</h1>
-        <SearchForm handleSearch={setSearchValue} />
+        <SearchForm
+          handleSearch={(value) => setValue(value) /*dispatch(search(value))*/}
+        />
       </header>
 
       <Box sx={{ my: 2 }}>
         {isLoading && <CircularProgress />}
 
-        {resultValue &&
-          (resultValue.length > 0
-            ? resultValue.map((item) => (
+        {data &&
+          (data.length > 0
+            ? data.map((item) => (
                 <Item
                   category={item.category}
                   title={item.title}
@@ -64,8 +48,8 @@ function App() {
   ) : (
     <>
       <h1>Error!</h1>
-      {error.message}
       <p>Please try again doing a browser refresh</p>
+      <a href="/">Reload</a>
     </>
   );
 }
